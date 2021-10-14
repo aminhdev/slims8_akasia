@@ -51,7 +51,7 @@ abstract class biblio_list_model
   protected $subquery = array();
   protected $biblio_ids = array();
   protected $emulate_short_word_search = false;
-  protected $queries_word_num_allowed = 20;
+  protected $queries_word_num_allowed = 500;
   protected $criteria = array();
   protected $label_cache = array();
   protected $custom_fields = array();

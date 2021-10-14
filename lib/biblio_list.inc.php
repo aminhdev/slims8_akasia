@@ -29,9 +29,22 @@ if (!defined('INDEX_AUTH')) {
 }
 
 class biblio_list extends biblio_list_model {
-  protected $searchable_fields = array('title', 'author', 'subject', 'isbn',
-		'publisher', 'gmd', 'notes', 'colltype', 'publishyear',
-		'location', 'itemcode', 'callnumber', 'itemcallnumber', 'notes');
+  protected $searchable_fields = array(
+    'title',
+    'author',
+    'subject',
+    'isbn',
+    'publisher',
+    'gmd',
+    'notes',
+    'colltype',
+    'publishyear',
+    'location',
+    'itemcode',
+    'callnumber',
+    'itemcallnumber',
+    'notes'
+  );
   protected $field_join_type = array('title' => 'OR', 'author' => 'OR', 'subject' => 'OR');
 
 
@@ -95,8 +108,8 @@ class biblio_list extends biblio_list_model {
       } else { $_boolean = 'AND'; }
       // search value
       $_q = @$this->obj_db->escape_string($_query['q']);
-			$_searched_word = str_replace(array('+', '-', '*'), '', $_q);
-			$this->words[$_searched_word] = $_searched_word;
+      $_searched_word = str_replace(array('+', '-', '*'), '', $_q);
+      $this->words[$_searched_word] = $_searched_word;
       // searched fields flag set
       $_searched_fields[$_field] = 1;
       $_previous_field = $_field;
@@ -138,31 +151,31 @@ class biblio_list extends biblio_list_model {
       } else {
         switch ($_field) {
           case 'location' :
-			if (!$this->disable_item_data) {
-			  $_subquery = 'SELECT location_id FROM mst_location WHERE location_name=\''.$_q.'\'';
-			  if ($_b == '-') {
-				  $_sql_criteria .= " item.location_id NOT IN ($_subquery)";
-			  } else { $_sql_criteria .= " item.location_id IN ($_subquery)"; }
-			} else {
-			  if ($_b == '-') {
-				  $_sql_criteria .= " biblio.node_id !='$_q'";
-			  } else { $_sql_criteria .= " biblio.node_id = '$_q'"; }
-			}
+      if (!$this->disable_item_data) {
+        $_subquery = 'SELECT location_id FROM mst_location WHERE location_name=\''.$_q.'\'';
+        if ($_b == '-') {
+          $_sql_criteria .= " item.location_id NOT IN ($_subquery)";
+        } else { $_sql_criteria .= " item.location_id IN ($_subquery)"; }
+      } else {
+        if ($_b == '-') {
+          $_sql_criteria .= " biblio.node_id !='$_q'";
+        } else { $_sql_criteria .= " biblio.node_id = '$_q'"; }
+      }
             break;
           case 'colltype' :
-			if (!$this->disable_item_data) {
-			  $_subquery = 'SELECT coll_type_id FROM mst_coll_type WHERE coll_type_name=\''.$_q.'\'';
-			  if ($_b == '-') {
-				  $_sql_criteria .= " item.coll_type_id NOT IN ($_subquery)";
-			  } else { $_sql_criteria .= " item.coll_type_id IN ($_subquery)"; }
-			}
+      if (!$this->disable_item_data) {
+        $_subquery = 'SELECT coll_type_id FROM mst_coll_type WHERE coll_type_name=\''.$_q.'\'';
+        if ($_b == '-') {
+          $_sql_criteria .= " item.coll_type_id NOT IN ($_subquery)";
+        } else { $_sql_criteria .= " item.coll_type_id IN ($_subquery)"; }
+      }
             break;
           case 'itemcode' :
-			if (!$this->disable_item_data) {
-			  if ($_b == '-') {
-				$_sql_criteria .= " item.item_code != '$_q'";
-			  } else { $_sql_criteria .= " item.item_code LIKE '$_q%'"; }
-			}
+      if (!$this->disable_item_data) {
+        if ($_b == '-') {
+        $_sql_criteria .= " item.item_code != '$_q'";
+        } else { $_sql_criteria .= " item.item_code LIKE '%$_q%'"; }
+      }
             break;
           case 'callnumber' :
             if ($_b == '-') {
@@ -170,11 +183,11 @@ class biblio_list extends biblio_list_model {
             } else { $_sql_criteria .= ' biblio.call_number LIKE \''.$_q.'%\''; }
             break;
           case 'itemcallnumber' :
-			if (!$this->disable_item_data) {
-			  if ($_b == '-') {
-				  $_sql_criteria .= ' item.call_number NOT LIKE \''.$_q.'%\'';
-			  } else { $_sql_criteria .= ' item.call_number LIKE \''.$_q.'%\''; }
-			}
+      if (!$this->disable_item_data) {
+        if ($_b == '-') {
+          $_sql_criteria .= ' item.call_number NOT LIKE \''.$_q.'%\'';
+        } else { $_sql_criteria .= ' item.call_number LIKE \''.$_q.'%\''; }
+      }
             break;
           case 'class' :
             if ($_b == '-') {
@@ -204,7 +217,7 @@ class biblio_list extends biblio_list_model {
             } else { $_sql_criteria .= " biblio.gmd_id IN ($_subquery)"; }
             break;
           case 'notes' :
-			      $_q = isset($_query['is_phrase'])?'"'.$_q.'"':$_q;
+            $_q = isset($_query['is_phrase'])?'"'.$_q.'"':$_q;
             if ($_b == '-') {
               $_sql_criteria .= " NOT (MATCH (biblio.notes) AGAINST ('".$_q."' IN BOOLEAN MODE))";
             } else { $_sql_criteria .= " (MATCH (biblio.notes) AGAINST ('".$_q."' IN BOOLEAN MODE))"; }
@@ -250,7 +263,7 @@ class biblio_list extends biblio_list_model {
 
     // init sql string
     $_sql_str = 'SELECT SQL_CALC_FOUND_ROWS biblio.biblio_id, biblio.title, biblio.image, biblio.isbn_issn,
-			biblio.publish_year, pbl.publisher_name AS `publisher`, pplc.place_name AS `publish_place`, biblio.labels, biblio.input_date';
+      biblio.publish_year, pbl.publisher_name AS `publisher`, pplc.place_name AS `publish_place`, biblio.labels, biblio.input_date';
 
     // checking custom frontpage fields file
     $custom_frontpage_record_file = SB.$sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/custom_frontpage_record.inc.php';
@@ -273,8 +286,8 @@ class biblio_list extends biblio_list_model {
     if ($this->criteria) {
       if (isset($this->criteria['searched_fields']['location']) || isset($this->criteria['searched_fields']['colltype'])) {
         if (!$this->disable_item_data) {
-		  $_add_sql_str .= ' LEFT JOIN item ON biblio.biblio_id=item.biblio_id ';
-		}
+      $_add_sql_str .= ' LEFT JOIN item ON biblio.biblio_id=item.biblio_id ';
+    }
       }
     }
 
@@ -289,6 +302,6 @@ class biblio_list extends biblio_list_model {
     $_sql_str .= ' FROM biblio '.$_add_sql_str.' ORDER BY biblio.last_update DESC LIMIT '.$_offset.', '.$this->num2show;
     // for debugging purpose only
     // echo "<div style=\"border: 1px solid navy; padding: 5px; color: navy; margin: 5px;\">$_sql_str</div>";
-	  return $_sql_str;
+    return $_sql_str;
   }
 }

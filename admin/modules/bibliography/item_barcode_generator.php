@@ -269,9 +269,38 @@ if (isset($_GET['keywords']) AND $_GET['keywords']) {
   $search_str = '';
   // if no qualifier in fields
   if (!preg_match('@[a-z]+\s*=\s*@i', $keywords)) {
-    foreach ($searchable_fields as $search_field) {
-      $search_str .= $search_field.'='.$keywords.' OR ';
+    // for input multiple keyword: for example case input 001, 002, 003
+    $keywords_multiple = explode(',', $keywords);
+
+    // for input range keyword: for example case input 001-003
+    $keywords_range = explode('-', $keywords);
+
+    if (!empty($keywords_range) && count($keywords_range) == 2) {
+      $keywords_multiple = [];
+
+      $first_range_num = preg_replace('/[^0-9]/', '', $keywords_range[0]);
+      $second_range_num = preg_replace('/[^0-9]/', '', $keywords_range[1]);
+
+      $text_range = str_replace($first_range_num, '', $keywords_range[0]);
+
+      $diff_num = (int)($second_range_num) - (int)($first_range_num);
+      $length_num = strlen($second_range_num);
+
+      if ($diff_num >= 0) {
+        for ($i = (int)$first_range_num; $i <= (int)$second_range_num; $i++) {
+          $keywords_multiple[] = $text_range.sprintf("%0{$length_num}d", $i);
+        }
+      }
     }
+
+    if (!empty($keywords_multiple)) {
+      foreach ($keywords_multiple as $each_keyword) {
+        foreach ($searchable_fields as $search_field) {
+          $search_str .= $search_field.'='.$each_keyword.' OR ';
+        }
+      }
+    }
+
   } else {
     $search_str = $keywords;
   }
