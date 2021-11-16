@@ -59,7 +59,7 @@ if (!$reportView) {
     <!-- filter -->
     <fieldset>
         <div class="per_title">
-            <h2><?php echo __('Items Title List'); ?></h2>
+            <h2><?php echo 'IN SỔ ĐĂNG KÍ CÁ BIỆT'; ?></h2>
         </div>
         <div class="infoBox">
             <?php echo __('Report Filter'); ?>
@@ -134,8 +134,6 @@ if (!$reportView) {
         'DATE_FORMAT(i.input_date, \'%d/%m/%Y\') AS \''.__('Input Dater').'\'',
         'i.item_code AS \''.__('Item Coder').'\'',
         'b.title AS \''.__('Title/Author').'\'',
-        '"" AS \''.'Kiem ke'.'\'',
-        '"" AS \''.'Kiem ke'.'\'',
         '"" AS \''.'Kiem ke'.'\'',
         'p.publisher_name AS \''.__('Publisher Name').'\'',
         'b.publish_year AS \''.__('Publisher Year').'\'',
@@ -234,14 +232,14 @@ if (!$reportView) {
     // callback function to show title and authors
     function showTitleAuthors($obj_db, $array_data)
     {
-        if (!$array_data[10]) {
+        if (!$array_data[8]) {
             return;
         }
         // author name query
         $_biblio_q = $obj_db->query('SELECT b.title, a.author_name FROM biblio AS b
             LEFT JOIN biblio_author AS ba ON b.biblio_id=ba.biblio_id
             LEFT JOIN mst_author AS a ON ba.author_id=a.author_id
-            WHERE b.biblio_id='.$array_data[10]);
+            WHERE b.biblio_id='.$array_data[8]);
         $_authors = '';
 
         while ($_biblio_d = $_biblio_q->fetch_row()) {
@@ -269,7 +267,7 @@ if (!$reportView) {
     // modify column value
     $reportgrid->modifyColumnContent(2, 'callback{showTitleAuthors}');
     // $reportgrid->modifyColumnContent(3, 'callback{showStatus}');
-    $reportgrid->invisible_fields = array(10);
+    $reportgrid->invisible_fields = array(8);
 
     // put the result into variables
     echo $reportgrid->createDataGrid($dbs, $table_spec, $num_recs_show);

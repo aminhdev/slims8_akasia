@@ -35,6 +35,7 @@ $menu[] = array(__('Z3950 SRU'), MWB.'bibliography/z3950sru.php', __('Grab Bibli
 $menu[] = array(__('Z3950 Service'), MWB.'bibliography/z3950.php', __('Grab Bibliographic Data from Z3950 Web Services'));
 $menu[] = array(__('P2P Service'), MWB.'bibliography/p2p.php', __('Grab Bibliographic Data from Other SLiMS Web Services'));
 $menu[] = array('Header', __('Tools'));
+$menu[] = array('IN SỔ ĐKCB', MWB.'reporting/customs/item_titles_list_dkcb.php', 'IN SỔ ĐĂNG KÍ CÁ BIỆT');
 $menu[] = array(__('Labels Printing'), MWB.'bibliography/dl_print.php', __('Print Document Labels'));
 $menu[] = array(__('Item Barcodes Printing'), MWB.'bibliography/item_barcode_generator.php', __('Print Item Barcodes'));
 $menu[] = array(__('MARC Export'), MWB.'bibliography/marcexport.php', __('Export Bibliographic Data to MARC file'));
