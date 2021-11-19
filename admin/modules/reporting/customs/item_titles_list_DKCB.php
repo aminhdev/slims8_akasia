@@ -163,13 +163,14 @@ if (!$reportView) {
     }
     if (isset($_GET['itemCodeStart']) AND !empty($_GET['itemCodeStart'])) {
         $location           = $_GET['location'];
-        $itemCodeStart      = $_GET['itemCodeStart'];
-        $itemCodeLen        = $_GET['itemCodeLen'];
-        $eachPage           = $_GET['recsEachPage'];
+        $itemCodeStart      = (int)$_GET['itemCodeStart'];
+        $itemCodeLen        = (int)$_GET['itemCodeLen'];
+        $eachPage           = (int)$_GET['recsEachPage'];
         $listItemCodeSearch = [];
 
-        for ($i = (int)$itemCodeStart; $i <= (int)$eachPage; $i++) {
-            $listItemCodeSearch[] = $location.sprintf("%0{$itemCodeLen}d", $i);
+        for ($i = 1; $i <= $eachPage; $i++) {
+            $listItemCodeSearch[] = $location.sprintf("%0{$itemCodeLen}d", $itemCodeStart);
+            $itemCodeStart = $itemCodeStart + 1;
         }
 
         $listItemCodeSearch = implode("','", $listItemCodeSearch);
